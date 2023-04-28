@@ -25,7 +25,9 @@ class ContactForm extends Component {
     const { name, number } = this.state;
     event.preventDefault();
     console.log(this.state);
-    this.props.contactAdd({ name: name, number: number });
+    this.props.checkedDublicateName(name)
+      ? alert(`This name "${name}" is already exist!`)
+      : this.props.contactAdd({ name: name, number: number });
     this.reset();
   };
 

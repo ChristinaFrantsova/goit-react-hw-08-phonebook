@@ -26,6 +26,11 @@ export class App extends Component {
     this.setState({ filter: event.target.value });
   };
 
+  checkedDublicateName = name =>
+    this.state.contacts.some(
+      el => el.name.toLowerCase() === name.toLowerCase()
+    );
+
   render() {
     // console.log(this.state.filter);
     const { filter, contacts } = this.state;
@@ -38,7 +43,10 @@ export class App extends Component {
       <div className="container">
         <div>
           <h2>Phonebook</h2>
-          <ContactForm contactAdd={this.contactAdd} />
+          <ContactForm
+            contactAdd={this.contactAdd}
+            checkedDublicateName={this.checkedDublicateName}
+          />
         </div>
 
         <div>
