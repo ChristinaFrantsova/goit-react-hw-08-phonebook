@@ -6,9 +6,11 @@ export class App extends Component {
   state = {
     contacts: [],
     name: '',
+    number: '',
   };
 
   nameInputId = nanoid();
+  numberInputId = nanoid();
 
   // onHandleChange = event => {
   //   this.setState({ name: event.target.value });
@@ -22,20 +24,20 @@ export class App extends Component {
   };
 
   onSubmitForm = event => {
-    const { name } = this.state;
+    const { name, number } = this.state;
     event.preventDefault();
     console.log(this.state);
-    this.contactAdd({ name: name });
+    this.contactAdd({ name: name, number: number });
     this.reset();
   };
 
   reset = () => {
-    this.setState({ name: '' });
+    this.setState({ name: '', number: '' });
   };
 
-  contactAdd = ({ name }) => {
+  contactAdd = ({ name, number }) => {
     this.setState({
-      contacts: [{ id: nanoid(), name }, ...this.state.contacts],
+      contacts: [{ id: nanoid(), name, number }, ...this.state.contacts],
     });
   };
 
@@ -45,19 +47,33 @@ export class App extends Component {
       <div className="container">
         <div>
           <h2>Phonebook</h2>
-          <span>Name</span>
           <form action="" onSubmit={this.onSubmitForm}>
-            <label htmlFor={this.nameInputId}></label>
-            <input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-              value={this.state.name}
-              onChange={this.onHandleChange}
-              id={this.nameInputId}
-            />
+            <span>Name</span>
+            <label htmlFor={this.nameInputId}>
+              <input
+                type="text"
+                name="name"
+                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+                required
+                value={this.state.name}
+                onChange={this.onHandleChange}
+                id={this.nameInputId}
+              />
+            </label>
+            <span>Number</span>
+            <label htmlFor={this.numberInputId}>
+              <input
+                type="tel"
+                name="number"
+                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                required
+                value={this.state.number}
+                onChange={this.onHandleChange}
+                id={this.numberInputId}
+              />
+            </label>
             <button type="submit">Add contact</button>
           </form>
         </div>
@@ -65,8 +81,12 @@ export class App extends Component {
         <div>
           <h2>Contacts</h2>
           <ul>
-            {contactArr.map(el => {
-              return <li key={el.id}> {el.name} </li>;
+            {contactArr.map(({ id, name, number }) => {
+              return (
+                <li key={id}>
+                  {name}: {number}
+                </li>
+              );
             })}
           </ul>
         </div>
