@@ -4,6 +4,7 @@ import { Component } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
+import { Container, Title, Subtitle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -22,7 +23,7 @@ export class App extends Component {
     }));
   };
 
-  onFilterUpdate = event => {
+  filterUpdate = event => {
     this.setState({ filter: event.target.value });
   };
 
@@ -30,6 +31,12 @@ export class App extends Component {
     this.state.contacts.some(
       el => el.name.toLowerCase() === name.toLowerCase()
     );
+
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
 
   render() {
     // console.log(this.state.filter);
@@ -40,25 +47,22 @@ export class App extends Component {
     });
 
     return (
-      <div className="container">
-        <div>
-          <h2>Phonebook</h2>
-          <ContactForm
-            contactAdd={this.contactAdd}
-            checkedDublicateName={this.checkedDublicateName}
-          />
-        </div>
-
-        <div>
-          <h2>Contacts</h2>
-          <Filter
-            htmlFor=""
-            value={this.state.filter}
-            onChange={this.onFilterUpdate}
-          />
-          <ContactList contactAvailable={contactAvailable} />
-        </div>
-      </div>
+      <Container>
+        <Title>Phonebook</Title>
+        <ContactForm
+          contactAdd={this.contactAdd}
+          checkedDublicateName={this.checkedDublicateName}
+        />
+        <Subtitle>Contacts</Subtitle>
+        <Filter
+          filterValue={this.state.filter}
+          filterUpdate={this.filterUpdate}
+        />
+        <ContactList
+          contactAvailable={contactAvailable}
+          deleteContact={this.deleteContact}
+        />
+      </Container>
     );
   }
 }
