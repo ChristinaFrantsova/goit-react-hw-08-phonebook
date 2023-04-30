@@ -17,20 +17,32 @@ export class App extends Component {
     filter: '',
   };
 
+  // contactAdd = ({ name, number }) => {
+  //   this.setState(({ contacts }) => ({
+  //     contacts: [{ id: nanoid(), name, number }, ...contacts],
+  //   }));
+  // }; --- старий варіант
+
   contactAdd = ({ name, number }) => {
-    this.setState(({ contacts }) => ({
-      contacts: [{ id: nanoid(), name, number }, ...contacts],
-    }));
+    const { contacts } = this.state;
+    const newContact = { id: nanoid(), name, number };
+
+    contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())
+      ? alert(`This name "${name}" is already exist!`)
+      : this.setState(({ contacts }) => ({
+          contacts: [newContact, ...contacts],
+        }));
   };
+
+  // checkedDublicateName = name =>
+  //   this.state.contacts.some(
+  //     contact => contact.name.toLowerCase() === name.toLowerCase()
+  //   ); ------додала цю функцію яка перевіряє на дубляж імен в
+  //----------- масиві контактів у функцію contactAdd
 
   filterUpdate = event => {
     this.setState({ filter: event.target.value });
   };
-
-  checkedDublicateName = name =>
-    this.state.contacts.some(
-      el => el.name.toLowerCase() === name.toLowerCase()
-    );
 
   deleteContact = id => {
     this.setState(prevState => ({
@@ -38,20 +50,21 @@ export class App extends Component {
     }));
   };
 
-  render() {
-    // console.log(this.state.filter);
+  filteredContacts = () => {
     const { filter, contacts } = this.state;
     const normalize = filter.toLowerCase();
-    const contactAvailable = contacts.filter(contact => {
+    return contacts.filter(contact => {
       return contact.name.toLowerCase().includes(normalize);
     });
-
+  };
+  render() {
+    // console.log(this.state.filter);
     return (
       <Container>
         <Title>Phonebook</Title>
         <ContactForm
           contactAdd={this.contactAdd}
-          checkedDublicateName={this.checkedDublicateName}
+          // checkedDublicateName={this.checkedDublicateName} --- старий варіант
         />
         <Subtitle>Contacts</Subtitle>
         <Filter
@@ -59,7 +72,7 @@ export class App extends Component {
           filterUpdate={this.filterUpdate}
         />
         <ContactList
-          contactAvailable={contactAvailable}
+          filteredContacts={this.filteredContacts()}
           deleteContact={this.deleteContact}
         />
       </Container>

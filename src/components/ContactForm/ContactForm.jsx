@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 import { Form, Label, Input, Title, Button } from './ContactForm.styled';
 
 class ContactForm extends Component {
@@ -22,13 +23,21 @@ class ContactForm extends Component {
     // console.log(event.target.name);
   };
 
+  // onSubmitForm = event => {
+  //   const { name, number } = this.state;
+  //   event.preventDefault();
+  //   console.log(this.state);
+  //   this.props.checkedDublicateName(name)
+  //     ? alert(`This name "${name}" is already exist!`)
+  //     : this.props.contactAdd({ name: name, number: number });
+  //   this.reset();
+  // }; -------старий варіант
+
   onSubmitForm = event => {
     const { name, number } = this.state;
     event.preventDefault();
-    console.log(this.state);
-    this.props.checkedDublicateName(name)
-      ? alert(`This name "${name}" is already exist!`)
-      : this.props.contactAdd({ name: name, number: number });
+
+    this.props.contactAdd({ name: name, number: number });
     this.reset();
   };
 
@@ -72,5 +81,9 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  contactAdd: PropTypes.func.isRequired,
+};
 
 export default ContactForm;
