@@ -23,6 +23,8 @@ export class App extends Component {
   //   }));
   // }; --- старий варіант
 
+  // Додає новий контакт та перевіряє на дубляж контактів який
+  //  вводить користувач порівнюючи новий контакт із тим який вже є
   contactAdd = ({ name, number }) => {
     const { contacts } = this.state;
     const newContact = { id: nanoid(), name, number };
@@ -40,16 +42,22 @@ export class App extends Component {
   //   ); ------додала цю функцію яка перевіряє на дубляж імен в
   //----------- масиві контактів у функцію contactAdd
 
-  filterUpdate = event => {
-    this.setState({ filter: event.target.value });
-  };
-
+  // Видаляє контакти по кліку на кнопку
   deleteContact = id => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== id),
     }));
   };
 
+  //  Оновлює властивість filter у стані компонента на значення,
+  // яке було введене в полі фільтрації event.target.value. Функція,
+  // викликається при кожному введенні нового символу в поле фільтрації.
+  filterUpdate = event => {
+    this.setState({ filter: event.target.value });
+  };
+
+  // Функція filteredContacts забезпечує фільтрацію списку контактів
+  //  на основі введеного користувачем рядка фільтру.
   filteredContacts = () => {
     const { filter, contacts } = this.state;
     const normalize = filter.toLowerCase();
@@ -57,6 +65,7 @@ export class App extends Component {
       return contact.name.toLowerCase().includes(normalize);
     });
   };
+
   render() {
     // console.log(this.state.filter);
     return (

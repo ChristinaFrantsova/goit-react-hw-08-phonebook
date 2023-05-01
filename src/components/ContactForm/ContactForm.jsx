@@ -16,6 +16,8 @@ class ContactForm extends Component {
   //   this.setState({ name: event.target.value });
   //   console.log(event.target.value);
   // };
+
+  // Відповідає за оновлення стану
   onHandleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
