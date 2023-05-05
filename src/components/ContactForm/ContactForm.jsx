@@ -1,88 +1,71 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Form, Label, Input, Title, Button } from './ContactForm.styled';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const ContactForm = ({ contactAdd }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  nameInputId = nanoid();
-  numberInputId = nanoid();
-
-  // onHandleChange = event => {
-  //   this.setState({ name: event.target.value });
-  //   console.log(event.target.value);
-  // };
+  const nameInputId = nanoid();
+  const numberInputId = nanoid();
 
   // Відповідає за оновлення стану
-  onHandleChange = event => {
+  const onHandleChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
-    // console.log(event.target.value);
-    // console.log(event.target.name);
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  // onSubmitForm = event => {
-  //   const { name, number } = this.state;
-  //   event.preventDefault();
-  //   console.log(this.state);
-  //   this.props.checkedDublicateName(name)
-  //     ? alert(`This name "${name}" is already exist!`)
-  //     : this.props.contactAdd({ name: name, number: number });
-  //   this.reset();
-  // }; -------старий варіант
-
-  onSubmitForm = event => {
-    const { name, number } = this.state;
+  const onSubmitForm = event => {
     event.preventDefault();
 
-    this.props.contactAdd({ name: name, number: number });
-    this.reset();
+    contactAdd({ name: name, number: number });
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    return (
-      <>
-        <Form action="" onSubmit={this.onSubmitForm}>
-          <Title>Name</Title>
-          <Label htmlFor={this.nameInputId}>
-            <Input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-              value={this.state.name}
-              onChange={this.onHandleChange}
-              id={this.nameInputId}
-            />
-          </Label>
-          <Title>Number</Title>
-          <Label htmlFor={this.numberInputId}>
-            <Input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-              value={this.state.number}
-              onChange={this.onHandleChange}
-              id={this.numberInputId}
-            />
-          </Label>
-          <Button type="submit">Add contact</Button>
-        </Form>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Form action="" onSubmit={onSubmitForm}>
+        <Title>Name</Title>
+        <Label htmlFor={nameInputId}>
+          <Input
+            type="text"
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required
+            value={name}
+            onChange={onHandleChange}
+            id={nameInputId}
+          />
+        </Label>
+        <Title>Number</Title>
+        <Label htmlFor={numberInputId}>
+          <Input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+            value={number}
+            onChange={onHandleChange}
+            id={numberInputId}
+          />
+        </Label>
+        <Button type="submit">Add contact</Button>
+      </Form>
+    </>
+  );
+};
 
 ContactForm.propTypes = {
   contactAdd: PropTypes.func.isRequired,
