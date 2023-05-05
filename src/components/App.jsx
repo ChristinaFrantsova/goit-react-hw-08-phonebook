@@ -6,23 +6,13 @@ import Filter from './Filter/Filter';
 import { Container, Title, Subtitle } from './App.styled';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  ]);
-  const [filter, setFilter] = useState('');
-
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
   // Під час завантаження застосунку контакти, якщо такі є, зчитуються
-  //  з локального сховища і записуються у стан.
-  useEffect(() => {
-    const contactsItem = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contactsItem);
-    if (parsedContacts) {
-      setContacts(parsedContacts);
-    }
-  }, []);
+  //  з локального сховища і записуються у стан ---- перенесла в UseState.
+
+  const [filter, setFilter] = useState('');
 
   // Під час додавання та видалення контакту контакти зберігаються
   // у локальне сховище localStorage.
