@@ -27,7 +27,7 @@ export const App = () => {
 
     contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())
       ? alert(`This name "${name}" is already exist!`)
-      : setContacts([newContact, ...contacts]);
+      : setContacts(prevContacts => [newContact, ...prevContacts]);
   };
 
   // Видаляє контакти по кліку на кнопку
