@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Item, Button, Div } from './Contacts.styled';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContactsThunk } from 'redux/thunk';
 import { useDispatch } from 'react-redux';
 
 const ContactItem = ({ id, name, number }) => {
@@ -11,7 +11,7 @@ const ContactItem = ({ id, name, number }) => {
       <Item key={id}>
         {name}: {number}
         <Button
-          onClick={() => dispatch(deleteContact(id))}
+          onClick={() => dispatch(deleteContactsThunk(id))}
           type="button"
           id={id}
         >

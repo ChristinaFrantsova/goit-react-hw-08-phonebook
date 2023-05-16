@@ -3,12 +3,18 @@ import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import { Container, Title, Subtitle } from './App.styled';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectFilter } from 'redux/selectors';
+import { useEffect } from 'react';
+import { fetchContactsThunk } from 'redux/thunk';
 
 export const App = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchContactsThunk());
+  }, [dispatch]);
 
   //  Перевіряє на дубляж контактів який
   //  вводить користувач порівнюючи новий контакт із тим який вже є
